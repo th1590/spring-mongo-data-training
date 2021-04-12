@@ -1,0 +1,276 @@
+openapi: 3.0.0
+info:
+  description: API specification for SuperBlog microservice
+  title: SuperBlog microservice API
+  version: v3
+servers:
+- url: http://localhost:8080/
+paths:
+  /articles:
+    get:
+      operationId: getArticleList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleListResponse'
+          description: Get article list successfully
+      summary: Get all articles
+      tags:
+      - getArticleList
+      x-accepts: application/json
+    post:
+      operationId: createArticle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequest'
+        description: Create article
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+          description: Create article successfully
+      summary: Create article
+      tags:
+      - createArticle
+      x-contentType: application/json
+      x-accepts: application/json
+  /articles/deactivate:
+    patch:
+      operationId: deactivateArticle
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+          description: deactivate acticle successfully
+      summary: deactivate article by id
+      tags:
+      - deactivateArticle
+      x-accepts: application/json
+  /articles/activate:
+    patch:
+      operationId: activateArticle
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+          description: activate acticle successfully
+      summary: activate article by id
+      tags:
+      - activateArticle
+      x-accepts: application/json
+  /users:
+    get:
+      operationId: getUserList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+          description: Get user list successfully
+      summary: Get all users
+      tags:
+      - getUserList
+      x-accepts: application/json
+    post:
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+        description: Create user
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+          description: Create user successfully
+      summary: Create user
+      tags:
+      - createUser
+      x-contentType: application/json
+      x-accepts: application/json
+  /users/find-by-email:
+    get:
+      operationId: findUserByEmail
+      parameters:
+      - explode: true
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+          description: Search user
+      summary: Search user by email
+      tags:
+      - search user by email
+      x-accepts: application/json
+components:
+  examples:
+    InternalServerError:
+      value:
+        responseCode: 500
+        faults:
+          "-": null
+          userMessage: There're some error when processing this request. Please retry
+            again or contact the site administrator for supporting
+          internalMessage: Internal server error
+          code: 1000
+          responseCode: 500
+  schemas:
+    UserListResponse:
+      example:
+        users:
+        - name: name
+          email: email
+        - name: name
+          email: email
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/UserResponseModel'
+          type: array
+      type: object
+    UserResponseModel:
+      example:
+        name: name
+        email: email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      type: object
+    ArticleListResponse:
+      example:
+        articles:
+        - authorName: authorName
+          title: title
+          authorId: authorId
+          content: content
+        - authorName: authorName
+          title: title
+          authorId: authorId
+          content: content
+      properties:
+        articles:
+          items:
+            $ref: '#/components/schemas/ArticleResponseModel'
+          type: array
+      type: object
+    ArticleResponseModel:
+      example:
+        authorName: authorName
+        title: title
+        authorId: authorId
+        content: content
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        authorName:
+          type: string
+        authorId:
+          type: string
+      type: object
+    CreateArticleRequest:
+      example:
+        title: title
+        authorId: authorId
+        content: content
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+      type: object
+    CreateUserRequest:
+      example:
+        name: name
+        email: email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      type: object
+    ObjectCreationSuccessResponse:
+      example:
+        id: id
+        responseCode: 0
+      properties:
+        id:
+          type: string
+        responseCode:
+          type: integer
+      type: object
+    ObjectUpdateSuccessResponse:
+      example:
+        document: document
+        id: id
+        responseCode: 0
+      properties:
+        id:
+          type: string
+        document:
+          type: string
+        responseCode:
+          type: integer
+      type: object
+    ApiError:
+      properties:
+        faults:
+          items:
+            $ref: '#/components/schemas/Fault'
+          type: array
+        responseCode:
+          type: integer
+      type: object
+    Fault:
+      properties:
+        internalMessage:
+          type: string
+        code:
+          type: integer
+        userMessage:
+          type: string
+      type: object
+

@@ -1,0 +1,466 @@
+openapi: 3.0.0
+info:
+  description: API specification for SuperBlog microservice
+  version: v3
+  title: SuperBlog microservice API
+servers:
+  - url: http://localhost:8080/
+paths:
+  /articles:
+    get:
+      tags:
+        - getArticleList
+      summary: Get all articles
+      operationId: getArticleList
+      responses:
+        '200':
+          description: Get article list successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleListResponse'
+    post:
+      tags:
+        - createArticle
+      summary: Create article
+      operationId: createArticle
+      requestBody:
+        description: Create article
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequest'
+      responses:
+        '200':
+          description: Create article successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+  /articles/id:
+    get:
+      tags:
+        - searchArticleById
+      summary: Search article by id
+      operationId: findArticleById
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Search article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponseModel'
+  /articles/deactivate:
+    patch:
+      tags:
+        - deactivateArticle
+      summary: deactivate article by id
+      operationId: deactivateArticle
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: false
+      responses:
+        200:
+          description: deactivate acticle successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+  /articles/activate:
+    patch:
+      tags:
+        - activateArticle
+      summary: activate article by id
+      operationId: activateArticle
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: false
+      responses:
+        200:
+          description: activate acticle successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+  /articles/title:
+    patch:
+      tags:
+        - updateTitle
+      summary: update the article's title by id
+      operationId: updateTitle
+      requestBody:
+        description: Update article title
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UpdateArticleTitleRequest'
+      responses:
+        200:
+          description: update acticle successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+  /articles/content:
+    patch:
+      tags:
+        - updateContent
+      summary: update the article's content by id
+      operationId: updateContent
+      requestBody:
+        description: Update article content
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UpdateArticleContentRequest'
+      responses:
+        200:
+          description: update acticle successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+  /articles/categories:
+    patch:
+      tags:
+        - updateCategories
+      summary: update the article's categories by id
+      operationId: updateCategories
+      requestBody:
+        description: Update article categories
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UpdateArticleCategoriesRequest'
+      responses:
+        200:
+          description: update acticle successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+
+  /comments:
+    post:
+      tags:
+        - createComment
+      summary: Create comment
+      operationId: createComment
+      requestBody:
+        description: Create comment
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+      responses:
+        '200':
+          description: Create comment successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+  /comments/userId:
+    get:
+      tags:
+        - search comments by userId
+      summary: Search comments by userId
+      operationId: findCommentsByUserId
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Search comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentListResponseModel'
+  /comments/articleId:
+    get:
+      tags:
+        - search comments by articleId
+      summary: Search comments by articleId
+      operationId: findCommentsByArticleId
+      parameters:
+        - in: query
+          name: articleId
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Search comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentListResponseModel'
+  /comments/activate:
+    patch:
+      tags:
+        - activateComment
+      summary: activate comment by id
+      operationId: activateComment
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: false
+      responses:
+        200:
+          description: activate comment successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+  /comments/deactivate:
+    patch:
+      tags:
+        - deactivateComment
+      summary: deactivate comment by id
+      operationId: deactivateComment
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: false
+      responses:
+        200:
+          description: deactivate comment successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+
+  /users:
+    get:
+      tags:
+        - getUserList
+      summary: Get all users
+      operationId: getUserList
+      responses:
+        '200':
+          description: Get user list successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+    post:
+      tags:
+        - createUser
+      summary: Create user
+      operationId: createUser
+      requestBody:
+        description: Create user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '200':
+          description: Create user successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+  /users/find-by-email:
+    get:
+      tags:
+        - search user by email
+      summary: Search user by email
+      operationId: findUserByEmail
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Search user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+
+components:
+  schemas:
+    UserListResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponseModel'
+    UserResponseModel:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+
+    ArticleListResponse:
+      type: object
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArticleResponseModel'
+    ArticleResponseModel:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+        enable:
+          type: boolean
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    CreateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    CreateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    CreateCommentRequest:
+      type: object
+      properties:
+        content:
+          type: string
+        userId:
+          type: string
+        articleId:
+          type: string
+    CommentResponseModel:
+      type: object
+      properties:
+        content:
+          type: string
+        userId:
+          type: string
+        articleId:
+          type: string
+        enable:
+          type: boolean
+    CommentListResponseModel:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentResponseModel'
+
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+
+    ObjectCreationSuccessResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        responseCode:
+          type: integer
+
+    ObjectUpdateSuccessResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        document:
+          type: string
+        responseCode:
+          type: integer
+
+    UpdateArticleTitleRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+
+    UpdateArticleContentRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+    UpdateArticleCategoriesRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+
+    ApiError:
+      type: object
+      properties:
+        faults:
+          type: array
+          items:
+            $ref: "#/components/schemas/Fault"
+        responseCode:
+          type: integer
+    Fault:
+      type: object
+      properties:
+        internalMessage:
+          type: string
+        code:
+          type: integer
+        userMessage:
+          type: string
+
+  examples:
+    InternalServerError:
+      value:
+        responseCode: 500
+        faults:
+          -:
+          userMessage: There're some error when processing this request. Please retry again or contact the site administrator for supporting
+          internalMessage: Internal server error
+          code: 1000
+          responseCode: 500
